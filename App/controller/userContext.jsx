@@ -8,15 +8,16 @@ import * as Font from "expo-font";
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
-    const [isUser, setisUser] = useState(false)
+  const [isUser, setisUser] = useState(false)
   const [isLoading, setisLoading] = useState(false)
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [Task,setTask]=useState([])
 
   const loadFonts = async () => {
     await Font.loadAsync({
       "Poppins-Black":require('../assets/Fonts/Poppins-Black.ttf'),
       "Poppins-Bold":require('../assets/Fonts/Poppins-Bold.ttf')
-    });
+    });setFontsLoaded(false)
   };
 
 
@@ -36,10 +37,30 @@ export const UserProvider = ({ children }) => {
       console.log(error)
     }
   }
+
+  const GetTaskdet=async()=>{
+    
+    try {
+      const get=JSON.parse(await AsyncStorage.getItem("Task"))
+      if(get?.length>0){
+        setTask(get)
+        setisLoading(false)
+        console.log(get)
+      }
+      setisLoading(false)
+    } catch (error) {
+      console.log(error)
+      setisLoading(false)
+    }
+  }
+
   useEffect(()=>{
-    Checkuser()
-    setFontsLoaded(true)
-    loadFonts().then(() => setFontsLoaded(false));
+   setFontsLoaded(true)
+   setisLoading(true)
+    Checkuser() 
+    setisLoading(true)
+    loadFonts();
+    // GetTaskdet()
   },[])
 
 

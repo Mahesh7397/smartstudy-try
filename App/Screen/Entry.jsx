@@ -5,7 +5,7 @@ import Main from './Main'
 import Calculater from '../StackScreen/Calculater'
 import About from '../StackScreen/About'
 import Menu from '../StackScreen/Menu'
-import { Colors, Fonst } from '../../Constants/colors'
+import { Colors, Fonst } from '../Constants/colors'
  
 
  const NestedStack=createNativeStackNavigator()

@@ -1,6 +1,6 @@
 import { Alert, Dimensions, Keyboard, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity,TouchableWithoutFeedback, View } from 'react-native'
 import React,{useEffect, useState} from 'react'
-import { Colors } from '../../Constants/colors'
+import { Colors, Fonst } from '../Constants/colors'
 import Api from '../api/Api'
 
 const { width, height } = Dimensions.get('window')
@@ -74,8 +74,8 @@ const Singup = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container} >
         <View style={styles.mainbox}>
-          <Text style={{ color: '#fff', fontSize: 18, fontWeight: '400' }}>Welcome  to</Text>
-          <Text style={{ color: '#fff', fontSize: 30, fontWeight: 'bold', padding: 4, fontFamily: 'Poppins' }}>Smart Study</Text>
+          <Text style={{ color: '#fff', fontSize: 18, fontFamily:Fonst.POPPINS_BLACK}}>Welcome  to</Text>
+          <Text style={{ color: '#fff', fontSize: 30, padding: 4, fontFamily:Fonst.POPPINS_BOLD }}>Smart Study</Text>
         </View>
         <View style={styles.bodybox}>
         <View style={styles.inputbox}>
@@ -104,7 +104,7 @@ const Singup = ({ navigation }) => {
           </View>
           <View style={styles.buttonbox}>
             <Pressable style={styles.button} disabled={disable}  onPress={()=>handlesubmit()}>
-              <Text style={{ color: '#fff', fontSize: 20, fontWeight: '800' }}>Sign up</Text>
+              <Text style={{ color: '#fff', fontSize: 20, fontFamily:Fonst.POPPINS_BOLD }}>Sign up</Text>
             </Pressable>
           </View>
         </View>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   tex: {
     color: '#fff',
     fontSize: 17,
-    fontWeight: '700',
+    fontFamily:Fonst.POPPINS_BLACK
   },
   input: {
     backgroundColor: '#fff',

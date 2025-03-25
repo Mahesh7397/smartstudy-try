@@ -1,6 +1,6 @@
 import { View, Text, Button, SafeAreaView, StyleSheet, Dimensions, Pressable, Image } from 'react-native'
 import React from 'react'
-import { Colors } from '../../Constants/colors'
+import { Colors, Fonst } from '../Constants/colors'
 
 const {width,height}=Dimensions.get('window')
 
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     text:{
         color: '#ffff',  
         fontSize:20,
-        fontWeight:600,
+        fontFamily:Fonst.POPPINS_BOLD
     },
     image:{
         width:120,
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
     headtext:{
         color:'#fff',
         fontSize:30,
-        fontWeight:'bold',
-        fontFamily:'Poppins'
+        fontFamily:Fonst.POPPINS_BOLD
     },
     subtext:{
         color:'#fff',
+        fontFamily:Fonst.POPPINS_BLACK,
         width:(80/100)*width,
         textAlign:'center',
         paddingVertical:5

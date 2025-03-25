@@ -7,7 +7,9 @@ export const Colors={
     TEXT_COLOR:'#F5F5F5',
     TINTY_COLOR:'#E0E0E0',
     NAVBAR_COLOR:'#000',
-    HEADER_COLOR:''
+    HEADER_COLOR:'',
+    MODAL_BG:'rgba(0, 0, 0, 0.27)',
+    INPUT_BG:'#1E1E1E',
 }
 
 export const Fonst={

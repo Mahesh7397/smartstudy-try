@@ -1,6 +1,6 @@
 import { Dimensions, Image, Pressable, SafeAreaView, TouchableOpacity, StyleSheet, Text, TextInput, View, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import React, { useState } from 'react'
-import { Colors } from '../../Constants/colors'
+import { Colors, Fonst } from '../Constants/colors'
 import Api from '../api/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useUser } from '../controller/userContext'
@@ -70,13 +70,13 @@ const Login = ({ navigation}) => {
                     <Text style={styles.subtext}>Your Study Companion</Text>
                 </View>
                 <View style={styles.bodycontainer}>
-                    <Text style={{ color: '#fff', fontSize: 20, fontWeight: '700', padding: 8 }}>Welcome back</Text>
+                    <Text style={{ color: '#fff', fontSize: 20, fontFamily:Fonst.POPPINS_BLACK, padding: 8 }}>Welcome back</Text>
                     <View style={styles.inputbox}>
-                        <Text style={{ color: '#fff', fontSize: 17, fontWeight: '700' }}>Email</Text>
+                        <Text style={{ color: '#fff', fontSize: 17, fontFamily:Fonst.POPPINS_BLACK }}>Email</Text>
                         <TextInput placeholder='Enter email' textContentType='emailAddress' keyboardType='email-address' placeholderTextColor={Colors.MAIN_COLOR} style={styles.input} multiline={false} value={email} onChangeText={setemail} />
                     </View>
                     <View style={styles.inputbox}>
-                        <Text style={{ color: '#fff', fontSize: 17, fontWeight: '700' }}>Password</Text>
+                        <Text style={{ color: '#fff', fontSize: 17, fontFamily:Fonst.POPPINS_BLACK }}>Password</Text>
                         <View><TextInput placeholder='Enter Password' secureTextEntry={secureText ? true : false} textContentType='password' placeholderTextColor={Colors.MAIN_COLOR} style={styles.input}
                             multiline={false} value={password} onChangeText={setpassword}
                         />
@@ -91,7 +91,7 @@ const Login = ({ navigation}) => {
                     </View>
                     <View style={styles.buttonbox}>
                         <Pressable style={styles.button} onPress={() => handlesubmet()}>
-                            <Text style={{ color: '#fff', fontSize: 20, fontWeight: '800' }}>Sign in</Text>
+                            <Text style={{ color: '#fff', fontSize: 20, fontFamily:Fonst.POPPINS_BOLD }}>Sign in</Text>
                         </Pressable>
                     </View>{enter ? <Text style={{ color: 'red' }}>Invalide Email and Password</Text> : null}
                 </View>
@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
     headtext: {
         color: '#fff',
         fontSize: 30,
-        fontWeight: 'bold',
-        fontFamily: 'Poppins'
+        fontFamily:Fonst.POPPINS_BOLD
     },
     subtext: {
         color: '#fff',
+        fontFamily:Fonst.POPPINS_BLACK,
         width: (80 / 100) * width,
         textAlign: 'center',
         paddingVertical: 5

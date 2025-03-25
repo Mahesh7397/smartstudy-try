@@ -1,7 +1,6 @@
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { Colors, Fonst } from '../../Constants/colors'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { Colors, Fonst } from '../Constants/colors'
 
 const {width,height}=Dimensions.get('window')
 const Menu = () => {

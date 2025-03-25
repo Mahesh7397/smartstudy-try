@@ -1,12 +1,11 @@
-import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, Pressable, StyleSheet, Keyboard,Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Home from '../Tabs/Home'
 import Courses from '../Tabs/Courses'
 import Task from '../Tabs/Task'
 import Ai from '../Tabs/Ai'
-import Calculater from '../StackScreen/Calculater'
-import { Colors, Fonst } from '../../Constants/colors'
+import { Colors, Fonst } from '../Constants/colors'
 //icons
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon3 from "react-native-vector-icons/Ionicons"
@@ -18,15 +17,33 @@ const { width, height } = Dimensions.get('window')
 
 const Tap = createBottomTabNavigator()
 const Main = ({navigation}) => {
+
+  // const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  // useEffect(() => {
+  //   const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+  //     setKeyboardVisible(true);
+  //   });
+  //   const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+  //     setKeyboardVisible(false);
+  //   });
+
+  //   return () => {
+  //     showSubscription.remove();
+  //     hideSubscription.remove();
+  //   };
+  // }, []);
+
   return (
     <Tap.Navigator screenOptions={
       {
         tabBarShowLabel: false,
         tabBarStyle: {
+          display:false?'none':'flex',
           backgroundColor: Colors.NAVBAR_COLOR,
           height: 60,
-          borderColor: Colors.BORDER_COLOR
-        },
+          borderColor: Colors.BACKGROUND_COLOR
+        }, 
         headerStyle: {
           backgroundColor: Colors.BACKGROUND_COLOR,
         },
