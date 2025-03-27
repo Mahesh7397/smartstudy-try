@@ -56,5 +56,7 @@ const styles = StyleSheet.create({
   },
   text:{
     color:Colors.TEXT_COLOR,
-}
+    fontSize:30 ,
+    fontFamily:Fonst.POPPINS_BOLD
+} 
 })

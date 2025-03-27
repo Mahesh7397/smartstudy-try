@@ -42,10 +42,10 @@ export const UserProvider = ({ children }) => {
     
     try {
       const get=JSON.parse(await AsyncStorage.getItem("Task"))
-      if(get?.length>0){
+      if(get){
         setTask(get)
         setisLoading(false)
-        console.log(get)
+        console.log(typeof(get))
       }
       setisLoading(false)
     } catch (error) {
@@ -60,12 +60,12 @@ export const UserProvider = ({ children }) => {
     Checkuser() 
     setisLoading(true)
     loadFonts();
-    // GetTaskdet()
+    GetTaskdet()
   },[])
 
 
   return (
-    <UserContext.Provider value={{isUser,isLoading,fontsLoaded,Checkuser }}>
+    <UserContext.Provider value={{isUser,isLoading,fontsLoaded,Checkuser,Task ,GetTaskdet}}>
       {children}
     </UserContext.Provider>
   );

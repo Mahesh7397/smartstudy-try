@@ -5,12 +5,14 @@ import Icons from "react-native-vector-icons/Feather"
 import DateTimePickerModal from "react-native-modal-datetime-picker";//optional
 import DatePicker from 'react-native-modern-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUser } from '../../controller/userContext';
 
 const { width, height } = Dimensions.get('window')
 
 const Taskinputmodule = ({ vis, set }) => {
+  const {GetTaskdet}=useUser()
   //info
-  const [date, setdate] = useState("" || new Date().toDateString())
+  const [date, setdate] = useState(new Date())
   const [Tasktitle, setTasktitle] = useState("")
   const [Dec, setDec] = useState("")
   const [fromtime, setfromtime] = useState("")
@@ -24,59 +26,95 @@ const Taskinputmodule = ({ vis, set }) => {
 
   //handel clickes 
   const handeldateconf = (selectedDate) => {
-    setdate(selectedDate.toDateString())
+    console.log(selectedDate)
+    setdate(selectedDate)
   }
 
-
-  const handleSave=async()=>{
-    const data={
-      CreatedAt:new Date(),
-      Title:Tasktitle,
-      Description:Dec,
-      Date:daily?"daily":date,
-      Timing:{
-        start:fromtime,
-        Stop:totime
-      }
-    }
+  const save=async(dd)=>{
     try {
-      const getdata=JSON.parse(await AsyncStorage.getItem("Task"))
-      if(getdata?.length>0){
-        const clr=[...getdata,data]
-        await AsyncStorage.setItem("Task",JSON.stringify(clr))
-        // console.log(clr)
+      await AsyncStorage.setItem("Task",JSON.stringify(dd))
         set(false)
         setTasktitle("")
         setdaily(false)
         setDec("")
-        setdate("")
+        setdate(new Date())
         setfromtime("")
         settotime("")
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 
+  const handleSave = async () => {
+    const monthdata = {
+      CreatedAt: new Date(),
+      Title: Tasktitle,
+      Description: Dec,
+      Timing: {
+        start: fromtime,
+        Stop: totime
       }
-      else{
-        await AsyncStorage.setItem("Task",JSON.stringify([data]))
+    }
+    let clr;
+    try {
+      const getdata = JSON.parse(await AsyncStorage.getItem("Task"))
+      if (getdata) {
+        if(getdata[date.getFullYear()]){//year
+          if(getdata[date.getFullYear()].month[date.getMonth()+1]){//month
+            if(getdata[date.getFullYear()].month[date.getMonth()+1][date.getDate()]){//date
+              getdata[date.getFullYear()].month[date.getMonth()+1][date.getDate()].push(monthdata)
+              save(getdata)
+            }
+            else{
+              getdata[date.getFullYear()].month[date.getMonth()+1][date.getDate()]=[monthdata]
+              save(getdata)
+            }
+          }
+          else{
+            getdata[date.getFullYear()].month[date.getMonth()+1]={[date.getDate()]:[monthdata]}
+            save(getdata)
+          }
+        }
+        else{
+          getdata[date.getFullYear()]={year:date.getFullYear(),month:{[date.getMonth()+1]:{[date.getDate()]:[monthdata]}}}
+          save(getdata)
+        }
+      }
+      else {
+        const data = {
+          [date.getFullYear()]:{
+            year:date.getFullYear(),
+            month:{
+              [date.getMonth()+1]:{
+                [date.getDate()]:[monthdata]
+              }
+            }
+          },
+        }
+        await AsyncStorage.setItem("Task", JSON.stringify(data))
         // console.log([data])
         set(false)
         setTasktitle("")
         setdaily(false)
         setDec("")
-        setdate("")
+        setdate(new Date())
         setfromtime("")
         settotime("")
       }
     } catch (error) {
       console.log(error)
+    } finally{
+      GetTaskdet()
     }
   }
   // useEffect(()=>{
   //    console.log(Dec)
   //    console.log(Tasktitle)
   // },[Dec,Tasktitle])
-  useEffect(()=>{
-    const d=new Date().toDateString()
+  useEffect(() => {
+    const d = new Date()
     setdate(d)
-  },[])
+  }, [])
   return (
     <>
       <Modal
@@ -98,21 +136,21 @@ const Taskinputmodule = ({ vis, set }) => {
                 <Pressable style={styles.date} disabled={daily
 
                 } onPress={() => setisdate(true)}>
-                  <Text style={styles.textbut}>{date}</Text>
+                  <Text style={styles.textbut}>{date.toDateString()}</Text>
                 </Pressable>
                 <Text style={{ marginBottom: 10, fontSize: 20, color: Colors.TEXT_COLOR, fontFamily: Fonst.POPPINS_BOLD }}>Daily</Text>
                 <View style={{
                   padding: 5, // Adds spacing around the Switch
                   backgroundColor: daily ? Colors.MAIN_COLOR : "#767577",
                   borderRadius: 30,
-                  height:30,
-                  justifyContent:'center',
-                  alignItems:'center',
-                  marginBottom:10,               
-                 }}
+                  height: 30,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                }}
                 >
                   <Switch
-                    trackColor={{ false: "#767577", true:Colors.MAIN_COLOR }}
+                    trackColor={{ false: "#767577", true: Colors.MAIN_COLOR }}
                     thumbColor={daily ? Colors.INPUT_BG : "#f4f3f4"} // Custom thumb color
                     ios_backgroundColor="#3e3e3e"
                     onValueChange={() => setdaily((prev) => !prev)}
@@ -120,7 +158,7 @@ const Taskinputmodule = ({ vis, set }) => {
                     style={{
                       transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }], // Scale entire Switch
                     }}
-                    
+
                   />
                 </View>
                 <DateTimePickerModal
@@ -190,11 +228,11 @@ const Taskinputmodule = ({ vis, set }) => {
                 isVisible={isto}
                 onCancel={() => setisto(false)}
                 themeVariant='dark'
-                  textColor={Colors.TEXT_COLOR}
-                  display='spinner'
+                textColor={Colors.TEXT_COLOR}
+                display='spinner'
               />
               <View style={{ justifyContent: 'center', alignItems: 'center', width: '90%', padding: 3, alignSelf: 'center' }}>
-                <Pressable disabled={Tasktitle.length > 4 || Dec.length > 0 ? false : true} onPress={()=>handleSave()} style={{ width: 'auto', maxWidth: 400, minWidth: 150, height: 40, backgroundColor: Tasktitle.length > 4 || Dec.length > 0 ? Colors.MAIN_COLOR : '#531A5D', borderWidth: 1, borderColor: Colors.BORDER_COLOR, borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
+                <Pressable disabled={Tasktitle.length > 4 || Dec.length > 0 ? false : true} onPress={() => handleSave()} style={{ width: 'auto', maxWidth: 400, minWidth: 150, height: 40, backgroundColor: Tasktitle.length > 4 || Dec.length > 0 ? Colors.MAIN_COLOR : '#531A5D', borderWidth: 1, borderColor: Colors.BORDER_COLOR, borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
                   <Text style={[styles.textbut, { color: Colors.TEXT_COLOR }]}>Save</Text>
                 </Pressable>
               </View>

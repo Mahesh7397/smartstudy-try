@@ -10,7 +10,7 @@ const {width,height}=Dimensions.get('window')
 const Account = () => {
   const [user, setuser] = useState({})
   const [isLoading, setisLoading] = useState(false)
-  const {Checkuser}=useUser()
+  const {Checkuser,GetTaskdet}=useUser()
   
   const handlelogout=async()=>{
      try {
@@ -20,6 +20,16 @@ const Account = () => {
        console.log(error)
      }
   }
+
+  const handleReset=async()=>{
+    try {
+     await AsyncStorage.removeItem('Task')
+     GetTaskdet()
+    } catch (error) {
+      console.log(error)
+    }
+ }
+
   const Getuser = async () => {
     try {
       setisLoading(true)
@@ -49,6 +59,10 @@ const Account = () => {
           <View style={{height:40}}/>
            <Pressable style={styles.butbox} onPress={()=>handlelogout()}>
             <Text style={styles.text}>Log out</Text>
+           </Pressable>
+           <View style={{height:40}}/>
+           <Pressable style={styles.butbox} onPress={()=>handleReset()}>
+            <Text style={styles.text}>Reset Task</Text>
            </Pressable>
         </View></>}
     </SafeAreaView>
