@@ -1,19 +1,13 @@
-import { Dimensions, SectionList, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Pressable, SectionList, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Colors, Fonst } from '../../Constants/colors'
 
 const {width,height}=Dimensions.get('window')
 
-const MultiSectionList = ({data}) => {
+const MultiSectionList = ({data,setisdetail,setdetail}) => {
 
     const randomcolor=()=>{
-        const color=[ "#B71C1C",
-            "#880E4F",
-             "#4A148C",
-             "#311B92",
-            "#1A237E",
-             "#0D47A1",
-             "#01579B","#006064","#004D40","#1B5E20","#33691E","#827717","#F57F17","#F57F17","#E65100","#BF360C"]
+        const color=[ "#00695c","#00838f","#733380","#ad4263","#c76548","#e08a25","#431ee","#3aoca3"]
         const white=["#E3F2FD","#E6E6FA","#FFE4E1","#F5FFFA","#FFF0F5","#FDF5E6"]
         return color[Math.floor(Math.random() * color.length )]
     }
@@ -21,10 +15,22 @@ const MultiSectionList = ({data}) => {
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
+
+    const handleselected=(day,date,year,t)=>{
+       const r={
+         year:year,
+         month:day,
+         date:date,
+         task:t
+       }
+       setdetail(r)
+       setisdetail(true)
+    }
+
   return (
     <View style={{width:'100%',justifyContent:'center',alignItems:'center'}}>
-    {data.map((item,i)=>{
-        const crl=item.task.map((e)=>{
+    {data.map((d,i)=>{
+        const crl=d.task.map((e)=>{
             return{
                title:e.month,
                data:e.datelist
@@ -32,16 +38,16 @@ const MultiSectionList = ({data}) => {
         })
        return (
         <View style={styles.header} key={i}>
-        <View style={styles.year}><Text style={styles.yeartext}>{item.year}</Text></View>
+        <View style={styles.year}><Text style={styles.yeartext}>{d.year}</Text></View>
        <SectionList
         sections={crl}
         nestedScrollEnabled={true}
         scrollEnabled={false} 
         keyExtractor={(item) => item.day}
         renderSectionHeader={({section:{title}})=><View style={styles.month}><Text style={styles.monthtext}>{monthNames[title-1]}</Text></View>}//month
-        renderItem={({item})=><View style={styles.day} key={item.day}>
+        renderItem={({item,section})=><View style={styles.day} key={item.day}>
             <View style={styles.date}><Text style={styles.datetext}>{item.day}</Text></View>
-            <View style={styles.taskbox}>{item.list.map((t)=><View style={[styles.task,{backgroundColor:randomcolor()}]}><Text style={styles.tasktext}>{t.Title}</Text></View>)}</View>
+            <View key={item.day} style={styles.taskbox}>{item.list.map((t,index)=><Pressable onPress={()=>handleselected(section.title,item.day,d.year,t)} style={[styles.task]} key={index}><Text style={styles.tasktext}>{t.Title}</Text></Pressable>)}</View>
             </View>}
        />
        </View>
@@ -93,13 +99,15 @@ const styles = StyleSheet.create({
       height:'auto'
     },
     date:{
-      width:30,
-      height:30,
-      backgroundColor:Colors.MAIN_COLOR,
+      width:40,
+      height:40,
+      // backgroundColor:Colors.MAIN_COLOR,
       alignSelf:'flex-start',
-      borderRadius:50,
-      borderColor:Colors.BORDER_COLOR,
-      padding:2,
+      // borderRadius:50,
+      // borderColor:Colors.BORDER_COLOR,
+      borderRightWidth:2,
+      borderRightColor:Colors.MAIN_COLOR,
+      padding:4,
       marginVertical:10,
       justifyContent:'center',
       alignItems:'center'
@@ -113,11 +121,12 @@ const styles = StyleSheet.create({
        padding:2,
        margin:2,
        width:'80%',
-       alignSelf:'center'
+       alignSelf:'center',
+       
     },
     task:{
        width:'100%',
-       
+       backgroundColor:"#5f31a9",
        padding:2,
        marginVertical:4,
        borderRadius:8,

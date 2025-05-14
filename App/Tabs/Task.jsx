@@ -7,6 +7,7 @@ import { Calendar } from 'react-native-calendars';
 import { useUser } from '../controller/userContext'
 import TaskListBox from "../component/Layout/TaskListBox";
 import MultiSectionList from "../component/Layout/MultiSectionList";
+import TaskDetail from "../component/Pages/TaskDetail";
 
 
 const { width, height } = Dimensions.get('window')
@@ -14,6 +15,9 @@ const Task = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [tstask, settstask] = useState([])
   const { Task ,GetTaskdet} = useUser()
+
+  const [selecteddetail,setselecteddetail]=useState({})
+  const [isdetail,setisdetail]=useState(false)
 
   const transfrom = (data) => {
     const al = Object.keys(data).map((e) => {
@@ -66,13 +70,14 @@ const Task = () => {
           />
         </View>
       
-          <MultiSectionList data={tstask}/>
+          <MultiSectionList data={tstask} setisdetail={setisdetail} setdetail={setselecteddetail}/>
         
       </ScrollView>
       <Pressable style={styles.addbut} onPress={() => setIsVisible(true)}>
-        <Icons name="add" color={Colors.TEXT_COLOR} size={45} />
+        <Icons name="add" color={Colors.TEXT_COLOR} size={30} />
       </Pressable>
       <Taskinputmodule vis={isVisible} set={setIsVisible} />
+      {selecteddetail?<TaskDetail data={selecteddetail} isvisible={isdetail} setisvisible={setisdetail} />:null}
     </View>
   );
 }
@@ -85,16 +90,25 @@ const styles = StyleSheet.create({
     flex: 1
   },
   addbut: {
-    width: 50,
-    height: 50,
+    width: 55,
+    height: 55,
     backgroundColor: Colors.MAIN_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 50,
+    borderRadius: 15,
     position: 'absolute',
+    borderColor:Colors.MAIN_COLOR,
     right: 20,
     bottom: 30,
-    zIndex: 1
+    zIndex: 1000,
+    shadowColor: Colors.MAIN_COLOR,
+    shadowOffset: {
+      width: 4,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   }
 })
